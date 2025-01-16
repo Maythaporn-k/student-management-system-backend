@@ -7,12 +7,23 @@ import (
 )
 
 func EditUser(db *sql.DB, student EditStudent) error {
-	fmt.Print(student)
-	query := "UPDATE students SET name = ?, age = ?, grade = ?, attendance = ? WHERE id = ?"
+	// check studentid
+	query := "SELECT COUNT(*) FROM students WHERE id=?"
+	var count int
+	err := db.QueryRow(query, student.ID).Scan(&count)
+	if count == 0 {
+		log.Print("Not Found ID", err)
+		return fmt.Errorf("not found student id")
+
+	}
+
+	//edit
+	query = "UPDATE students SET name = ?, age = ?, grade = ?, attendance = ? WHERE id = ?"
 	// Execute the update query
-	_, err := db.Exec(query, student.Name, student.Age, student.Grade, student.Attendance, student.ID)
+	_, err = db.Exec(query, student.Name, student.Age, student.Grade, student.Attendance, student.ID)
 	if err != nil {
-		log.Fatal("failed to update student: %v", err)
+		log.Printf("failed to update student: %v", err)
+		return err
 	}
 
 	return nil

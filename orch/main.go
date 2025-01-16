@@ -16,9 +16,9 @@ func main() {
 		AllowHeaders: "Origin, Content-Type, Accept",
 	}))
 	app.Get("/orch/student-list", handlers.StudentList)
-	app.Post("/orch/create-user", handlers.CreateStudent)
-	app.Delete("/orch/delete-user", handlers.DeleteStudent)
-	app.Put("/orch/edit-user", handlers.EditStudent)
+	app.Post("/orch/create-user", handlers.CreateUser)
+	app.Delete("/orch/delete-user", handlers.DeleteUser)
+	app.Put("/orch/edit-user", handlers.EditUser)
 
 	app.Listen(":3001")
 }

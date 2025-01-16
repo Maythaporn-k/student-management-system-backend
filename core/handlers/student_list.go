@@ -2,15 +2,29 @@ package handlers
 
 import (
 	"database/sql"
+	"fmt"
 	"log"
 )
 
 func StudentList(db *sql.DB) ([]Student, error) {
-	query := "SELECT id, name, age, grade, email, attendance FROM students"
+	// count total student
+	query := "SELECT COUNT(*) FROM students"
+	var count int
+	err := db.QueryRow(query).Scan(&count)
+	if err != nil {
+		log.Print("failed to execute count query: %w", err)
+	}
+	if count == 0 {
 
+		return nil, fmt.Errorf("no data")
+
+	}
+
+	//querry student
+	query = "SELECT id, name, age, grade, email, attendance FROM students"
 	rows, err := db.Query(query)
 	if err != nil {
-		log.Fatal("Error executing query: %v", err)
+		log.Print("Error executing query: %v", err)
 		return nil, err
 	}
 	defer rows.Close()
@@ -20,7 +34,7 @@ func StudentList(db *sql.DB) ([]Student, error) {
 	for rows.Next() {
 		var student Student
 		if err := rows.Scan(&student.ID, &student.Name, &student.Age, &student.Grade, &student.Email, &student.Attendance); err != nil {
-			log.Fatal(err)
+			log.Print(err)
 			return nil, err
 		}
 
@@ -28,7 +42,7 @@ func StudentList(db *sql.DB) ([]Student, error) {
 	}
 
 	if err := rows.Err(); err != nil {
-		log.Fatal(err)
+		log.Print(err)
 		return nil, err
 	}
 	return students, nil

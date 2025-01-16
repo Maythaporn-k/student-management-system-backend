@@ -41,8 +41,13 @@ func main() {
 	app.Get("/core/student-list", func(c *fiber.Ctx) error {
 		students, err := handlers.StudentList(db)
 		if err != nil {
+			if err.Error() == "no data" {
+				return c.Status(fiber.StatusOK).JSON(fiber.Map{
+					"message": fmt.Sprintf("Not have any of student yet"),
+				})
+			}
 			return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
-				"error": "Failed to fetch student list",
+				"message": "Failed to fetch student list",
 			})
 		}
 		return c.Status(fiber.StatusOK).JSON(students)
@@ -53,14 +58,19 @@ func main() {
 		var student handlers.InsertStudent
 		if err := c.BodyParser(&student); err != nil {
 			return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-				"error": "Invalid input data",
+				"message": "Invalid input data",
 			})
 		}
 
 		err := handlers.CreateUser(db, student)
 		if err != nil {
+			if err.Error() == "email existence" {
+				return c.Status(fiber.StatusConflict).JSON(fiber.Map{
+					"message": fmt.Sprintf("This email of %s is already registered. Please use a different email.", student.Name),
+				})
+			}
 			return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
-				"error": "Failed to insert student into the database",
+				"message": "Failed to insert student into the database",
 			})
 		}
 
@@ -75,14 +85,19 @@ func main() {
 
 		if err := c.BodyParser(&studentId); err != nil {
 			return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-				"error": "Invalid delete data",
+				"message": "Invalid delete data",
 			})
 		}
 
 		err := handlers.DeleteUser(db, studentId)
 		if err != nil {
+			if err.Error() == "not found student id" {
+				return c.Status(fiber.StatusConflict).JSON(fiber.Map{
+					"message": fmt.Sprintf("Not found this student id"),
+				})
+			}
 			return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
-				"error": "Failed to delete student from the database",
+				"message": "Failed to delete student from the database",
 			})
 		}
 
@@ -96,14 +111,19 @@ func main() {
 		var student handlers.EditStudent
 		if err := c.BodyParser(&student); err != nil {
 			return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-				"error": "Invalid input data",
+				"message": "Invalid input data",
 			})
 		}
 
 		err := handlers.EditUser(db, student)
 		if err != nil {
+			if err.Error() == "not found student id" {
+				return c.Status(fiber.StatusConflict).JSON(fiber.Map{
+					"message": fmt.Sprintf("Not found this student id"),
+				})
+			}
 			return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
-				"error": "Failed to update student",
+				"message": "Failed to update student",
 			})
 		}
 
