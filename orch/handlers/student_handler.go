@@ -45,14 +45,7 @@ func StudentList(c *fiber.Ctx) error {
 		return c.Status(fiber.ErrBadRequest.Code).SendString("Failed to read response body")
 	}
 
-	switch resp.StatusCode {
-	case http.StatusOK:
-		return c.Status(fiber.StatusOK).Send(body)
-	case http.StatusNotFound:
-		return c.Status(fiber.StatusNotFound).SendString("Student list not found")
-	default:
-		return c.Status(fiber.StatusInternalServerError).SendString("Error Internal Server")
-	}
+	return c.Status(fiber.StatusOK).Send(body)
 
 }
 
@@ -84,14 +77,7 @@ func CreateStudent(c *fiber.Ctx) error {
 		return c.Status(fiber.ErrBadRequest.Code).SendString("Failed to read response body")
 	}
 
-	switch resp.StatusCode {
-	case http.StatusOK:
-		return c.Status(fiber.StatusOK).Send(body)
-	case http.StatusNotFound:
-		return c.Status(fiber.StatusNotFound).SendString("Can't insert new student")
-	default:
-		return c.Status(fiber.StatusInternalServerError).SendString("Error Internal Server")
-	}
+	return c.Status(fiber.StatusOK).Send(body)
 }
 
 // TODO: Delete a student
@@ -120,14 +106,7 @@ func DeleteStudent(c *fiber.Ctx) error {
 		return c.Status(fiber.ErrBadRequest.Code).SendString("Failed to read response body")
 	}
 
-	switch resp.StatusCode {
-	case http.StatusOK:
-		return c.Status(fiber.StatusOK).Send(body)
-	case http.StatusNotFound:
-		return c.Status(fiber.StatusNotFound).SendString("Can't delete student")
-	default:
-		return c.Status(fiber.StatusInternalServerError).SendString("Error Internal Server")
-	}
+	return c.Status(fiber.StatusOK).Send(body)
 }
 
 // TODO: Edit student
@@ -160,12 +139,5 @@ func EditStudent(c *fiber.Ctx) error {
 		return c.Status(fiber.ErrBadRequest.Code).SendString("Failed to read response body")
 	}
 
-	switch resp.StatusCode {
-	case http.StatusOK:
-		return c.Status(fiber.StatusOK).Send(body)
-	case http.StatusNotFound:
-		return c.Status(fiber.StatusNotFound).SendString("Can't edit student")
-	default:
-		return c.Status(fiber.StatusInternalServerError).SendString("Error Internal Server")
-	}
+	return c.Status(fiber.StatusOK).Send(body)
 }
