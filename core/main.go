@@ -43,7 +43,7 @@ func main() {
 		if err != nil {
 			if err.Error() == "no data" {
 				return c.Status(fiber.StatusOK).JSON(fiber.Map{
-					"message": fmt.Sprintf("Not have any of student yet"),
+					"message": "Not have any of student yet",
 				})
 			}
 			return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
@@ -93,7 +93,7 @@ func main() {
 		if err != nil {
 			if err.Error() == "not found student id" {
 				return c.Status(fiber.StatusConflict).JSON(fiber.Map{
-					"message": fmt.Sprintf("Not found this student id"),
+					"message": "Not found this student id",
 				})
 			}
 			return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
@@ -119,7 +119,7 @@ func main() {
 		if err != nil {
 			if err.Error() == "not found student id" {
 				return c.Status(fiber.StatusConflict).JSON(fiber.Map{
-					"message": fmt.Sprintf("Not found this student id"),
+					"message": "Not found this student id",
 				})
 			}
 			return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
