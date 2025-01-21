@@ -1,26 +1,43 @@
-name: Performance Test at Student Management
+name: Select Performance Test
 
-# Trigger the workflow when a pull request is made to the 'main' branch
+# Allow manual trigger and provide inputs for test selection
 on:
-  pull_request:
-    branches:
-      - main
+  workflow_dispatch:
+    inputs:
+      test_type:
+        description: "Select the API test to run"
+        required: true
+        default: "student-list"
+        type: choice
+        options:
+          - student-list
+          - student-create
+          - student-update
 
 jobs:
   test_performance:
     runs-on: ubuntu-latest
 
     steps:
-      # Checkout the code
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # Set up Node.js (if needed for your environment)
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '16'
+      - name: Install k6
+        run: |
+          curl -s https://dl.k6.io/key.gpg | sudo tee /etc/apt/trusted.gpg.d/k6.asc
+          echo "deb https://dl.k6.io/deb stable main" | sudo tee /etc/apt/sources.list.d/k6.list
+          sudo apt update
+          sudo apt install k6
 
-      # Run k6 performance test for the Student List API
-      - name: Run k6 performance test on student list API
-        run: k6 run performance_test/single_services/performance-test-orch-student-list.js
+      - name: Run k6 performance test based on selected input
+        run: |
+          if [ "${{ github.event.inputs.test_type }}" == "student-list" ]; then
+            k6 run performance_test/single_services/performance-test-orch-student-list.js
+          elif [ "${{ github.event.inputs.test_type }}" == "student-create" ]; then
+            k6 run performance_test/single_services/performance-test-orch-student-create.js
+          elif [ "${{ github.event.inputs.test_type }}" == "student-update" ]; then
+            k6 run performance_test/single_services/performance-test-orch-student-update.js
+          else
+            echo "No valid test type selected"
+            exit 1
+          fi
