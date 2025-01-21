@@ -1,0 +1,26 @@
+name: Performance Test at Student Management
+
+# Trigger the workflow when a pull request is made to the 'main' branch
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  test_performance:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checkout the code
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Set up Node.js (if needed for your environment)
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+
+      # Run k6 performance test for the Student List API
+      - name: Run k6 performance test on student list API
+        run: k6 run performance_test/single_services/performance-test-orch-student-list.js
