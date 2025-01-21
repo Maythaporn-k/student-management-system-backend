@@ -1,4 +1,4 @@
-import { create_user_orch } from "../loadtest_api/create_user_orch.js";
+import { create_user_orch } from "../loadtest_api/orch/create_user_orch.js";
 import Options from "../../option.config.js";
 
 export const thresholds_409 = {

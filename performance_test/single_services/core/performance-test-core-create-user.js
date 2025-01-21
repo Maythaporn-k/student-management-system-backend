@@ -1,4 +1,4 @@
-import { create_user_core } from "../loadtest_api/create_user_core.js";
+import { create_user_core } from "../loadtest_api/core/create_user_core.js";
 import Options from "../../option.config.js";
 
 export const thresholds_409 = {

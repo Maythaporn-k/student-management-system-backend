@@ -1,4 +1,4 @@
-import { student_list_core } from "../loadtest_api/student_list_core.js";
+import { student_list_core } from "../loadtest_api/core/student_list_core.js";
 import Options from "../../option.config.js";
 
 export const thresholds_429 = {
