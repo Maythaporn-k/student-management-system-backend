@@ -1,0 +1,67 @@
+name: Select Performance Test
+
+# Allow manual trigger and provide inputs for test selection
+on:
+  workflow_dispatch:
+    inputs:
+      test_type:
+        description: "Select the API test to run"
+        required: true
+        default: "student-list"
+        type: choice
+        options:
+          - student-list
+          - create-user
+          - delete-user
+          - edit-user
+
+      api_type:
+        description: "Select the layer type"
+        required: true
+        default: "orch"
+        type: choice
+        options:
+          - orch
+          - core
+
+jobs:
+  test_performance:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Install k6
+        run: |
+          curl -s https://dl.k6.io/key.gpg | sudo tee /etc/apt/trusted.gpg.d/k6.asc
+          echo "deb https://dl.k6.io/deb stable main" | sudo tee /etc/apt/sources.list.d/k6.list
+          sudo apt update
+          sudo apt install k6
+
+      - name: Run k6 performance test based on selected input
+        run: |
+          if [ "${{ github.event.inputs.api_type }}" == "orch" ]; then
+            if [ "${{ github.event.inputs.test_type }}" == "student-list" ]; then
+              k6 run performance_test/single_services/orch/performance-test-orch-student-list.js
+            elif [ "${{ github.event.inputs.test_type }}" == "create-user" ]; then
+              k6 run performance_test/single_services/orch/performance-test-orch-create-user.js
+            elif [ "${{ github.event.inputs.test_type }}" == "delete-user" ]; then
+              k6 run performance_test/single_services/orch/performance-test-orch-delete-user.js
+            elif [ "${{ github.event.inputs.test_type }}" == "edit-user" ]; then
+              k6 run performance_test/single_services/orch/performance-test-orch-edit-user.js
+            fi
+          elif [ "${{ github.event.inputs.api_type }}" == "core" ]; then
+            if [ "${{ github.event.inputs.test_type }}" == "student-list" ]; then
+              k6 run performance_test/single_services/core/performance-test-core-student-list.js
+            elif [ "${{ github.event.inputs.test_type }}" == "create-user" ]; then
+              k6 run performance_test/single_services/core/performance-test-core-create-user.js
+            elif [ "${{ github.event.inputs.test_type }}" == "delete-user" ]; then
+              k6 run performance_test/single_services/core/performance-test-core-delete-user.js
+            elif [ "${{ github.event.inputs.test_type }}" == "edit-user" ]; then
+              k6 run performance_test/single_services/core/performance-test-core-edit-user.js
+            fi
+          else
+            echo "No valid API type selected"
+            exit 1
+          fi

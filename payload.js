@@ -1,4 +1,4 @@
-export default class Payload {
+export default class payload {
   static getCreatePayload() {
     const name = ["Jack ", "Susan ", "Thomas ", "Ali ", "Florence "][
       Math.floor(Math.random() * 5)

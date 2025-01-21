@@ -1,14 +1,16 @@
-import config from "../../config.js";
+import config from "../../../config.js";
 import http from "k6/http";
 import { check, sleep } from "k6";
+import payload from "../../../payload.js";
 
 const baseUrl = config.getOrchUrl();
-const header = config.headers();
-
-export function student_list_orch() {
-  const response = http.get(baseUrl + "/student-list", {
-    header,
-  });
+const headers = config.headers();
+let studentId = 0;
+export function edit_user_orch() {
+  studentId += 1;
+  const Payload = payload.getEditPayload(studentId);
+  console.log(Payload);
+  const response = http.post(baseUrl + "/edit-user", Payload, { headers });
 
   // Add checks for the response
   const isSuccessful = check(response, {
