@@ -1,0 +1,43 @@
+name: Select Performance Test
+
+# Allow manual trigger and provide inputs for test selection
+on:
+  workflow_dispatch:
+    inputs:
+      test_type:
+        description: "Select the API test to run"
+        required: true
+        default: "student-list"
+        type: choice
+        options:
+          - student-list
+          - student-create
+          - student-update
+
+jobs:
+  test_performance:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Install k6
+        run: |
+          curl -s https://dl.k6.io/key.gpg | sudo tee /etc/apt/trusted.gpg.d/k6.asc
+          echo "deb https://dl.k6.io/deb stable main" | sudo tee /etc/apt/sources.list.d/k6.list
+          sudo apt update
+          sudo apt install k6
+
+      - name: Run k6 performance test based on selected input
+        run: |
+          if [ "${{ github.event.inputs.test_type }}" == "student-list" ]; then
+            k6 run performance_test/single_services/performance-test-orch-student-list.js
+          elif [ "${{ github.event.inputs.test_type }}" == "student-create" ]; then
+            k6 run performance_test/single_services/performance-test-orch-student-create.js
+          elif [ "${{ github.event.inputs.test_type }}" == "student-update" ]; then
+            k6 run performance_test/single_services/performance-test-orch-student-update.js
+          else
+            echo "No valid test type selected"
+            exit 1
+          fi

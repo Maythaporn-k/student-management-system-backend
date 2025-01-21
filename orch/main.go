@@ -9,6 +9,13 @@ import (
 
 func main() {
 	app := fiber.New()
+
+	// *set content type
+	app.Use(func(c *fiber.Ctx) error {
+		c.Set("Content-Type", "application/json")
+		return c.Next()
+	})
+
 	// middleware
 	app.Use(cors.New(cors.Config{
 		AllowOrigins: "http://localhost:3000",

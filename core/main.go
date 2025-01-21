@@ -4,10 +4,12 @@ import (
 	"core/handlers"
 	"fmt"
 	"log"
+	"time"
 
 	"database/sql"
 
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/limiter"
 
 	_ "github.com/go-sql-driver/mysql"
 )
@@ -37,9 +39,23 @@ func main() {
 		log.Fatalf("Failed to connect to the database: %v", err)
 	}
 	defer db.Close()
+
+	// rate limits
+	rateLimiter := limiter.New(limiter.Config{
+		Max:        5,                // Maximum number of requests
+		Expiration: 10 * time.Second, // Time frame for rate limiting
+		LimitReached: func(c *fiber.Ctx) error {
+			return c.Status(fiber.StatusTooManyRequests).JSON(fiber.Map{
+
+				"message": "Too many requests, please try again later.",
+			})
+		},
+	})
+
 	//TODO : List
-	app.Get("/core/student-list", func(c *fiber.Ctx) error {
+	app.Get("/core/student-list", rateLimiter, func(c *fiber.Ctx) error {
 		students, err := handlers.StudentList(db)
+		fmt.Println("list has called")
 		if err != nil {
 			if err.Error() == "no data" {
 				return c.Status(fiber.StatusOK).JSON(fiber.Map{
@@ -50,6 +66,7 @@ func main() {
 				"message": "Failed to fetch student list",
 			})
 		}
+		fmt.Print(c.Status(fiber.StatusOK).JSON(students))
 		return c.Status(fiber.StatusOK).JSON(students)
 	})
 
