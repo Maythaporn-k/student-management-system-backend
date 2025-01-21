@@ -1,4 +1,4 @@
-name: Select Performance Test
+name: Performance Test
 
 # Allow manual trigger and provide inputs for test selection
 on:
