@@ -39,24 +39,24 @@ jobs:
 
       - name: Run k6 performance test based on selected input
         run: |
-          if [ "${{ github.event.inputs.api_type }}" == "orch" ]; then
-            if [ "${{ github.event.inputs.test_type }}" == "student-list" ]; then
+          if [ "${{ github.event.inputs.test_type }}" == "orch" ]; then
+            if [ "${{ github.event.inputs.api_type }}" == "student-list" ]; then
               k6 run performance_test/single_services/orch/performance-test-orch-student-list.js
-            elif [ "${{ github.event.inputs.test_type }}" == "create-user" ]; then
+            elif [ "${{ github.event.inputs.api_type }}" == "create-user" ]; then
               k6 run performance_test/single_services/orch/performance-test-orch-create-user.js
-            elif [ "${{ github.event.inputs.test_type }}" == "delete-user" ]; then
+            elif [ "${{ github.event.inputs.api_type }}" == "delete-user" ]; then
               k6 run performance_test/single_services/orch/performance-test-orch-delete-user.js
-            elif [ "${{ github.event.inputs.test_type }}" == "edit-user" ]; then
+            elif [ "${{ github.event.inputs.api_type }}" == "edit-user" ]; then
               k6 run performance_test/single_services/orch/performance-test-orch-edit-user.js
             fi
-          elif [ "${{ github.event.inputs.api_type }}" == "core" ]; then
-            if [ "${{ github.event.inputs.test_type }}" == "student-list" ]; then
+          elif [ "${{ github.event.inputs.test_type }}" == "core" ]; then
+            if [ "${{ github.event.inputs.api_type }}" == "student-list" ]; then
               k6 run performance_test/single_services/core/performance-test-core-student-list.js
-            elif [ "${{ github.event.inputs.test_type }}" == "create-user" ]; then
+            elif [ "${{ github.event.inputs.api_type }}" == "create-user" ]; then
               k6 run performance_test/single_services/core/performance-test-core-create-user.js
-            elif [ "${{ github.event.inputs.test_type }}" == "delete-user" ]; then
+            elif [ "${{ github.event.inputs.api_type }}" == "delete-user" ]; then
               k6 run performance_test/single_services/core/performance-test-core-delete-user.js
-            elif [ "${{ github.event.inputs.test_type }}" == "edit-user" ]; then
+            elif [ "${{ github.event.inputs.api_type }}" == "edit-user" ]; then
               k6 run performance_test/single_services/core/performance-test-core-edit-user.js
             fi
           else
