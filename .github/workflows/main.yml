@@ -1,19 +1,4 @@
 name: Select Performance Test
-
-# Allow manual trigger and provide inputs for test selection
-on:
-  workflow_dispatch:
-    inputs:
-      test_type:
-        description: "Select the API test to run"
-        required: true
-        default: "student-list"
-        type: choice
-        options:
-          - student-list
-          - student-create
-          - student-update
-
 jobs:
   test_performance:
     runs-on: ubuntu-latest
