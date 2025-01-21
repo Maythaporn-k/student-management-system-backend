@@ -4,6 +4,14 @@ name: Select Performance Test
 on:
   workflow_dispatch:
     inputs:
+      api_type:
+        description: "Select the layer type"
+        required: true
+        default: "orch"
+        type: choice
+        options:
+          - orch
+          - core
       test_type:
         description: "Select the API test to run"
         required: true
@@ -14,16 +22,6 @@ on:
           - create-user
           - delete-user
           - edit-user
-
-      api_type:
-        description: "Select the layer type"
-        required: true
-        default: "orch"
-        type: choice
-        options:
-          - orch
-          - core
-
 jobs:
   test_performance:
     runs-on: ubuntu-latest
