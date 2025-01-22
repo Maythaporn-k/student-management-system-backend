@@ -18,7 +18,7 @@ export function delete_user_orch() {
   });
 
   // Log error if the request fails
-  if (r.status != 200) {
+  if (response.status != 200) {
     console.error(
       `Request failed. Status: ${response.status}, Body: ${response.body}`
     );
