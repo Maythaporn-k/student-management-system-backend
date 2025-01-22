@@ -6,11 +6,6 @@ orch:
 	@echo "Running Orchestrator service on branch $(GIT_BRANCH)"
 	cd orch && go run main.go
 
-# Run the Core service
-core:
-	@echo "Running Core service"
-	cd core && go run main.go
-
 # Create a new branch
 create-branch:
 	@read -p "Enter the new branch name: " branch_name; \
