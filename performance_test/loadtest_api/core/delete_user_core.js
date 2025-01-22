@@ -14,11 +14,12 @@ export function delete_user_core() {
   // Add checks for the response
   const isSuccessful = check(response, {
     "status is 200": (r) => r.status === 200,
+    "status is 409": (r) => r.status === 409,
     "response time < 200ms": (r) => r.timings.duration < 200,
   });
 
   // Log error if the request fails
-  if (!isSuccessful) {
+  if (r.status != 200) {
     console.error(
       `Request failed. Status: ${response.status}, Body: ${response.body}`
     );
