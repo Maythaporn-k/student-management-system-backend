@@ -1,4 +1,4 @@
-import { student_list_orch } from "../loadtest_api/orch/student_list_orch.js";
+import { student_list_orch } from "../../loadtest_api/orch/student_list_orch.js";
 import Options from "../../option.config.js";
 
 export const thresholds_429 = {
