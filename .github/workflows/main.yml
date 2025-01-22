@@ -7,7 +7,7 @@ on:
       api_type:
         description: "Select the layer type"
         required: true
-        default: "orch"
+        default: orch
         type: choice
         options:
           - orch
@@ -15,7 +15,7 @@ on:
       test_type:
         description: "Select the API test to run"
         required: true
-        default: "student-list"
+        default: student-list
         type: choice
         options:
           - student-list
