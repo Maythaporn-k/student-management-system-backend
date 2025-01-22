@@ -39,7 +39,7 @@ jobs:
 
       - name: Run k6 performance test based on selected input
         run: |
-          if [ "${{ github.event.inputs.test_type }}" == "orch" ]; then
+          if [ "${{ github.event.inputs.test_type }}" == "orch" ]; 
             if [ "${{ github.event.inputs.api_type }}" == "student-list" ]; then
               k6 run performance_test/single_services/orch/performance-test-orch-student-list.js
             elif [ "${{ github.event.inputs.api_type }}" == "create-user" ]; then
