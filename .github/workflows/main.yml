@@ -4,7 +4,7 @@ name: Performance Test
 on:
   workflow_dispatch:
     inputs:
-      api_type:
+      test_type:
         description: "Select the layer type"
         required: true
         default: orch
@@ -12,7 +12,7 @@ on:
         options:
           - orch
           - core
-      test_type:
+      api_type:
         description: "Select the API test to run"
         required: true
         default: student-list
