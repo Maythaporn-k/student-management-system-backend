@@ -21,6 +21,8 @@ export function student_list_orch() {
     console.error(
       `Request failed. Status: ${response.status}, Body: ${response.body}`
     );
+  } else {
+    console.log("success");
   }
 
   sleep(1); // Simulate user wait time between requests

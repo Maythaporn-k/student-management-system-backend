@@ -3,13 +3,14 @@ import http from "k6/http";
 import { check, sleep } from "k6";
 import payload from "../../../payload.js";
 
-const baseUrl = config.getcoreUrl();
+const baseUrl = config.getCoreUrl();
 const headers = config.headers();
 let studentId = 0;
 export function edit_user_core() {
   studentId += 1;
   const Payload = payload.getEditPayload(studentId);
-  const response = http.post(baseUrl + "/edit-user", Payload, { headers });
+  console.log(Payload);
+  const response = http.put(baseUrl + "/edit-user", Payload, { headers });
 
   // Add checks for the response
   const isSuccessful = check(response, {
@@ -19,10 +20,12 @@ export function edit_user_core() {
   });
 
   // Log error if the request fails
-  if (r.status != 200) {
+  if (response.status != 200) {
     console.error(
       `Request failed. Status: ${response.status}, Body: ${response.body}`
     );
+  } else {
+    console.log(Payload);
   }
 
   sleep(1); // Simulate user wait time between requests

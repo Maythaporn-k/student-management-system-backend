@@ -1,7 +1,6 @@
 export default class config {
   static headers() {
     return {
-      accept: "application/json, text/plain, */*",
       "content-type": "application/json",
     };
   }

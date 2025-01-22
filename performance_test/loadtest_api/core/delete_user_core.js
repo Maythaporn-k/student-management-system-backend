@@ -23,6 +23,8 @@ export function delete_user_core() {
     console.error(
       `Request failed. Status: ${response.status}, Body: ${response.body}`
     );
+  } else {
+    console.log(Payload);
   }
 
   sleep(1); // Simulate user wait time between requests

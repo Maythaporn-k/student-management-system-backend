@@ -22,6 +22,8 @@ export function delete_user_orch() {
     console.error(
       `Request failed. Status: ${response.status}, Body: ${response.body}`
     );
+  } else {
+    console.log(payload);
   }
 
   sleep(1); // Simulate user wait time between requests

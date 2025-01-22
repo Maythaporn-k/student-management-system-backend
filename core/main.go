@@ -145,7 +145,7 @@ func main() {
 		}
 
 		return c.Status(fiber.StatusOK).JSON(fiber.Map{
-			"message": "Student Edited successfully",
+			"message": "Student edited successfully",
 		})
 	})
 
