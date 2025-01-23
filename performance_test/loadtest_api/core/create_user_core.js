@@ -3,15 +3,12 @@ import http from "k6/http";
 import { check, sleep } from "k6";
 import payload from "../../../payload.js";
 
-const baseUrl = config.getOrchUrl();
+const baseUrl = config.getCoreUrl();
 const headers = config.headers();
-let studentId = 0;
-export function edit_user_orch() {
-  studentId += 1;
+const Payload = payload.getCreatePayload();
 
-  const Payload = payload.getEditPayload(studentId);
-
-  const response = http.put(baseUrl + "/edit-user", Payload, { headers });
+export function create_user_core() {
+  const response = http.post(baseUrl + "/create-user", Payload, { headers });
 
   // Add checks for the response
   const isSuccessful = check(response, {
@@ -23,7 +20,7 @@ export function edit_user_orch() {
   // Log error if the request fails
   if (response.status != 200) {
     console.error(
-      `Request failed. Status: ${response.status}, Body: ${response.body} , ${Payload}`
+      `Request failed. Status: ${response.status}, Body: ${response.body}`
     );
   } else {
     console.log(Payload);

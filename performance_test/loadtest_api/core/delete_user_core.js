@@ -1,14 +1,15 @@
 import config from "../../../config.js";
 import http from "k6/http";
 import { check, sleep } from "k6";
-import payload from "../../../payload.js";
 
-const baseUrl = config.getOrchUrl();
+const baseUrl = config.getCoreUrl();
 const headers = config.headers();
-const Payload = payload.getCreatePayload();
+let studentId = 0;
 
-export function create_user_orch() {
-  const response = http.post(baseUrl + "/create-user", Payload, { headers });
+export function delete_user_core() {
+  studentId += 1;
+  const payload = JSON.stringify({ id: studentId });
+  const response = http.del(baseUrl + "/delete-user", payload, { headers });
 
   // Add checks for the response
   const isSuccessful = check(response, {
@@ -20,7 +21,7 @@ export function create_user_orch() {
   // Log error if the request fails
   if (response.status != 200) {
     console.error(
-      `Request failed. Status: ${response.status}, Body: ${response.body} , ${Payload}`
+      `Request failed. Status: ${response.status}, Body: ${response.body}`
     );
   } else {
     console.log(Payload);

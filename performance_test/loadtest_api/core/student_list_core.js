@@ -2,10 +2,10 @@ import config from "../../../config.js";
 import http from "k6/http";
 import { check, sleep } from "k6";
 
-const baseUrl = config.getOrchUrl();
+const baseUrl = config.getCoreUrl();
 const header = config.headers();
 
-export function student_list_orch() {
+export function student_list_core() {
   const response = http.get(baseUrl + "/student-list", {
     header,
   });
@@ -13,6 +13,7 @@ export function student_list_orch() {
   // Add checks for the response
   const isSuccessful = check(response, {
     "status is 200": (r) => r.status === 200,
+    "status is 429": (r) => r.status === 429,
     "response time < 200ms": (r) => r.timings.duration < 200,
   });
 
@@ -22,7 +23,7 @@ export function student_list_orch() {
       `Request failed. Status: ${response.status}, Body: ${response.body}`
     );
   } else {
-    console.log("success");
+    console.log("succuss");
   }
 
   sleep(1); // Simulate user wait time between requests
