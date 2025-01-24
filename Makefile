@@ -1,10 +1,10 @@
 # Targets
-.PHONY: orch core create-branch create-branch-from-main perf-test
+.PHONY: core create-branch create-branch-from-main 
 
 # Run the Core service
 core:
 	@echo "Running Core service"
-	cd core && go run main.go
+	cd app && go run main.go
 
 # Create a new branch
 create-branch:

@@ -32,6 +32,10 @@ func setupDatabaseConnection() (*sql.DB, error) {
 	return db, nil
 }
 
+func indexHandler(c *fiber.Ctx) error {
+	return c.SendString("This is student management service (core)")
+}
+
 func main() {
 	app := fiber.New()
 	db, err := setupDatabaseConnection()
@@ -51,6 +55,9 @@ func main() {
 			})
 		},
 	})
+
+	//TODO : Index
+	app.Get("/", indexHandler)
 
 	//TODO : List
 	app.Get("/core/student-list", rateLimiter, func(c *fiber.Ctx) error {
@@ -149,5 +156,5 @@ func main() {
 		})
 	})
 
-	app.Listen(":3002")
+	app.Listen(":8002")
 }
