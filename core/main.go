@@ -2,8 +2,10 @@ package main
 
 import (
 	"core/handlers"
+	"core/handlers_mock"
 	"fmt"
 	"log"
+	"os"
 	"time"
 
 	"database/sql"
@@ -32,6 +34,10 @@ func setupDatabaseConnection() (*sql.DB, error) {
 	return db, nil
 }
 
+func indexHandler(c *fiber.Ctx) error {
+	return c.SendString("This is student management service (core)")
+}
+
 func main() {
 	app := fiber.New()
 	db, err := setupDatabaseConnection()
@@ -51,21 +57,25 @@ func main() {
 			})
 		},
 	})
-
+	// TODO : Index
+	app.Get("/", indexHandler)
 	//TODO : List
 	app.Get("/core/student-list", rateLimiter, func(c *fiber.Ctx) error {
-		students, err := handlers.StudentList(db)
-		fmt.Println("list has called")
-		if err != nil {
-			if err.Error() == "no data" {
-				return c.Status(fiber.StatusOK).JSON(fiber.Map{
-					"message": "Not have any of student yet",
-				})
-			}
-			return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
-				"message": "Failed to fetch student list",
-			})
-		}
+		// students, err := handlers.StudentList(db)
+		// fmt.Println("list has called")
+		// if err != nil {
+		// 	if err.Error() == "no data" {
+		// 		return c.Status(fiber.StatusOK).JSON(fiber.Map{
+		// 			"message": "Not have any of student yet",
+		// 		})
+		// 	}
+		// 	return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+		// 		"message": "Failed to fetch student list",
+		// 	})
+		// }
+
+		students := handlers_mock.StudentListMock()
+
 		fmt.Print(c.Status(fiber.StatusOK).JSON(students))
 		return c.Status(fiber.StatusOK).JSON(students)
 	})
@@ -149,5 +159,10 @@ func main() {
 		})
 	})
 
-	app.Listen(":3002")
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8080" // Default to 8080 if PORT is not set
+	}
+
+	app.Listen(":" + port)
 }

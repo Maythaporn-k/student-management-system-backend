@@ -6,6 +6,10 @@ core:
 	@echo "Running Core service"
 	cd core && go run main.go
 
+core-local:
+	@echo "Running Core service"
+	cd core && PORT=8002 go run main.go
+
 # Create a new branch
 create-branch:
 	@read -p "Enter the new branch name: " branch_name; \
